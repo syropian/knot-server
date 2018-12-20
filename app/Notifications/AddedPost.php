@@ -4,7 +4,6 @@ namespace Knot\Notifications;
 
 use Knot\Models\Post;
 use Illuminate\Notifications\Notification;
-use NotificationChannels\Telegram\TelegramFile;
 use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramMessage;
 
@@ -59,9 +58,8 @@ class AddedPost extends Notification
         if ($isPhotoPost) {
             $photo = $this->post->postable->image_url;
 
-            return TelegramFile::create()
-                ->content('*'.$author.'* added a photo. \n _'.$body.'_')
-                ->file($photo, 'photo');
+            return TelegramMessage::create()
+                ->content("*" . $author . "* added a photo. \n _" . $body . "_ \n" . $photo);
         } else {
             return TelegramMessage::create()
                 ->content('*'.$author.'* added a post. \n _'.$body.'_');
