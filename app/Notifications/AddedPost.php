@@ -62,7 +62,7 @@ class AddedPost extends Notification
                 ->content("*" . $author . "* added a photo. \n _" . $body . "_ \n" . $photo);
         } else {
             return TelegramMessage::create()
-                ->content('*'.$author.'* added a post. \n _'.$body.'_');
+                ->content("*".$author."* added a post. \n _".$body."_");
         }
     }
 }
