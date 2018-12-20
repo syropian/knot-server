@@ -176,6 +176,7 @@ return [
         Knot\Providers\AuthServiceProvider::class,
         // Knot\Providers\BroadcastServiceProvider::class,
         Knot\Providers\EventServiceProvider::class,
+        Knot\Providers\TelescopeServiceProvider::class,
         Knot\Providers\RouteServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Hootlex\Friendships\FriendshipsServiceProvider::class,
