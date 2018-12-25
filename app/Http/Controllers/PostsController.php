@@ -2,6 +2,7 @@
 
 namespace Knot\Http\Controllers;
 
+use Knot\Models\User;
 use Knot\Models\Post;
 
 class PostsController extends Controller
