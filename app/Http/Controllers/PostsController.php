@@ -16,9 +16,18 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function feed()
+    public function timeline()
     {
-        return auth()->user()->feed();
+        return auth()->user()->timeline();
+    }
+
+    public function profile(User $user)
+    {
+        $this->authorize('can_view_profile', $user);
+        return [
+            'user' => $user,
+            'posts' => $user->feed(),
+        ];
     }
 
     public function show(Post $post)

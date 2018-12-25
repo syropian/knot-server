@@ -3,6 +3,7 @@
 namespace Knot\Models;
 
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Hootlex\Friendships\Traits\Friendable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -64,7 +65,11 @@ class User extends Authenticatable
     public function getAvatarUrlAttribute()
     {
         if ($this->profile_image) {
-            return $this->profile_image;
+            if (starts_with($this->profile_image, 'http')) {
+                return $this->profile_image;
+            } else {
+                return Storage::cloud()->url($this->profile_image);
+            }
         } else {
             return 'https://placekitten.com/400/400';
         }
@@ -77,7 +82,7 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function feed()
+    public function timeline()
     {
         $ids = $this->getFriends()->map->id->prepend($this->id);
 
@@ -86,6 +91,15 @@ class User extends Authenticatable
             ->whereIn('user_id', $ids)
             ->paginate(config('app.posts_per_page'));
     }
+
+    public function feed()
+    {
+        return Post::with(['location', 'postable', 'user', 'comments', 'reactions.user', 'accompaniments.user'])
+            ->latest()
+            ->where('user_id', $this->id)
+            ->paginate(config('app.posts_per_page'));
+    }
+
 
     public function getSuggestedFriends()
     {
